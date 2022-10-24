@@ -1,10 +1,10 @@
 
 const CharListItem = (props) => {
-	const {thumbnail, name} = props;
+	const {thumbnail, imgStyle, name} = props;
 
 	return (
 		<li className="char__item">
-			<img src={thumbnail} alt="char"/>
+			<img src={thumbnail} style={imgStyle} alt={name}/>
 			<div className="char__name">{name}</div>
 		</li>
 	)
