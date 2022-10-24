@@ -24,6 +24,13 @@ class CharList extends Component {
 		})
 	}
 
+	onCharLoading = () => {
+		this.setState({
+			loading: true,
+			error: false,
+		})
+	}
+
 	onError = () => {
 		this.setState({
 			loading: false,
@@ -32,6 +39,7 @@ class CharList extends Component {
 	}
 
 	createListItems = () => {
+		this.onCharLoading();
 		this.marvelService
 			.getAllCharacters()
 			.then(this.onCharLoaded)
@@ -44,12 +52,13 @@ class CharList extends Component {
 
 	render() {
 		const {charList, loading, error} = this.state;
+		const {onCharSelected} = this.props;
 		const elements = charList.map(char => {
 			const {id, thumbnail, ...charProps} = char;
 			const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {'objectFit': 'contain'} : null;
 
 			return (
-				<CharListItem key={id} imgStyle={imgStyle} thumbnail={thumbnail} {...charProps}/>
+				<CharListItem key={id} onCharSelected={() => onCharSelected(id)} imgStyle={imgStyle} thumbnail={thumbnail} {...charProps}/>
 			)
 		})
 

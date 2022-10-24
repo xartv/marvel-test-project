@@ -27,7 +27,7 @@ export default class MarvelService {
 	_transformCharacter = (char) => {
 		let descr = char.description;
 		if (!descr) {
-			descr = 'Упс... Кажется, данных по этому персонажу нет в базе'
+			descr = "Ooops..there's no info about this character"
 		} else if (descr.length > 210) {
 			descr = `${descr.slice(0, 207)}...`;
 		}
@@ -39,6 +39,7 @@ export default class MarvelService {
 			homepage: char.urls[0].url,
 			wiki: char.urls[1].url,
 			id: char.id,
+			comics: char.comics.items,
 		}		
 	}
 }
