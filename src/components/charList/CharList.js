@@ -15,18 +15,15 @@ class CharList extends Component {
 	}
 	
 	marvelService = new MarvelService();
+
+	componentDidMount() {
+		this.createListItems();
+	}
 	
-	onCharLoaded = (charList) => {
+	onCharListLoaded = (charList) => {
 		this.setState({
 			charList,
 			loading: false,
-			error: false,
-		})
-	}
-
-	onCharLoading = () => {
-		this.setState({
-			loading: true,
 			error: false,
 		})
 	}
@@ -39,15 +36,10 @@ class CharList extends Component {
 	}
 
 	createListItems = () => {
-		this.onCharLoading();
 		this.marvelService
 			.getAllCharacters()
-			.then(this.onCharLoaded)
+			.then(this.onCharListLoaded)
 			.catch(this.onError)
-	}
-
-	componentDidMount() {
-		this.createListItems();
 	}
 
 	render() {

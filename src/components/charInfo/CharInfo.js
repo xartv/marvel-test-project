@@ -87,7 +87,7 @@ const Content = ({char}) => {
 		comics = comics.splice(0, 10);
 	}
 
-	let elements = comics.map((item, id, items) => {
+	let elements = comics.map((item, id) => {
 			return (
 				<li key={id} className="char__comics-item">
 					{item.name}
