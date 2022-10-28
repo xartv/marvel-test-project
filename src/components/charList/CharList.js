@@ -90,7 +90,10 @@ class CharList extends Component {
 					onCharSelected={() => onCharSelected(id)} 
 					imgStyle={imgStyle} 
 					thumbnail={thumbnail}
-					onFocus={this.onFocus} 
+					onFocus={(e) => {
+						this.onFocus(e);
+						onCharSelected(id);
+					}} 
 					{...charProps}/>
 			)
 		})
