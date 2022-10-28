@@ -18,13 +18,20 @@ class CharList extends Component {
 		newListLoading: false,
 		endList: false, 
 	}
+
+	myRef = [];
 	
 	marvelService = new MarvelService();
 
 	componentDidMount() {
 		this.onRequest();
+		console.log(this.myRef);
 	}
 	
+	setRef = (elem) => {
+		this.myRef.push(elem);
+	}
+
 	onCharListLoaded = (newCharList) => {
 		if (newCharList.length < 9) {
 			this.setState({
@@ -62,6 +69,13 @@ class CharList extends Component {
 			.catch(this.onError)
 	}
 
+	onFocus = (e) => {
+		this.myRef.forEach(item => {
+			item.classList.remove('char__item_selected');
+		})
+		e.target.classList.add('char__item_selected');
+	}
+
 	render() {
 		const {charList, loading, error, offset, newListLoading, endList} = this.state;
 		const {onCharSelected} = this.props;
@@ -70,7 +84,14 @@ class CharList extends Component {
 			const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {'objectFit': 'contain'} : null;
 
 			return (
-				<CharListItem key={id} onCharSelected={() => onCharSelected(id)} imgStyle={imgStyle} thumbnail={thumbnail} {...charProps}/>
+				<CharListItem 
+					key={id} 
+					onSetRef={this.setRef} 
+					onCharSelected={() => onCharSelected(id)} 
+					imgStyle={imgStyle} 
+					thumbnail={thumbnail}
+					onFocus={this.onFocus} 
+					{...charProps}/>
 			)
 		})
 
