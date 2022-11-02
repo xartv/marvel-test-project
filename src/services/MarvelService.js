@@ -1,31 +1,23 @@
+import { useHttp } from '../hooks/http.hook';
 
+const useMarvelService = () => {
+	const {loading, request, error, clearError} = useHttp(); // вытаскиваем сущности хука в отдельные переменные
 
-export default class MarvelService {
-	_apiBase = 'https://gateway.marvel.com:443/v1/public/';
-	_apiKey = 'apikey=21aa5af94424603715dc10109257132d';
-	_baseOffset = 100;
+	const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
+	const _apiKey = 'apikey=21aa5af94424603715dc10109257132d';
+	const _baseOffset = 100;
 
-	getResource = async (url) => {
-		let res = await fetch(url);
-	
-		if (!res.ok) {
-			throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-		}
-	
-		return await res.json();
-	}
-
-	getAllCharacters = async (offset = this._baseOffset) => {
-		const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`);
-		return res.data.results.map(this._transformCharacter); // можно не писать item => this._transformCharacter(item), приходящий аргумент итак попадет в коллбэк
+	const getAllCharacters = async (offset = _baseOffset) => {
+		const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
+		return res.data.results.map(_transformCharacter); // можно не писать item => this._transformCharacter(item), приходящий аргумент итак попадет в коллбэк
 	}
 	
-	getCharacter = async (id) => {
-		const res = await this.getResource(`${this._apiBase}characters/${id}?limit=9&offset=210&${this._apiKey}`);
-		return this._transformCharacter(res.data.results[0]);
+	const getCharacter = async (id) => {
+		const res = await request(`${_apiBase}characters/${id}?limit=9&offset=210&${_apiKey}`);
+		return _transformCharacter(res.data.results[0]);
 	}
 
-	_transformCharacter = (char) => {
+	const _transformCharacter = (char) => {
 		let descr = char.description;
 		if (!descr) {
 			descr = "Ooops..there's no info about this character"
@@ -43,5 +35,8 @@ export default class MarvelService {
 			comics: char.comics.items,
 		}		
 	}
+
+	return {loading, error, getAllCharacters, getCharacter, clearError} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
 }
 
+export default useMarvelService;

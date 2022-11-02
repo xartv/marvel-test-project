@@ -1,4 +1,4 @@
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 import Skeleton from '../skeleton/Skeleton';
@@ -11,10 +11,8 @@ import './charInfo.scss';
 const CharInfo = (props) => {
 
 	const [char, setChar] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(false);
 
-	const marvelSevice = new MarvelService();
+	const {loading, error, getCharacter, clearError} = useMarvelService();
 
 	useEffect(() => {
 		updateChar();
@@ -22,17 +20,6 @@ const CharInfo = (props) => {
 
 	const onCharLoaded = (char) => {
 		setChar(char);
-		setLoading(false);
-		setError(false);
-	}
-
-	const onError = () => {
-		setLoading(false);
-		setError(true);
-	}
-
-	const onCharLoading = () => {
-		setLoading(true);
 	}
 
 	const updateChar = () => {
@@ -40,12 +27,9 @@ const CharInfo = (props) => {
 			return;
 		}
 
-		onCharLoading();
-
-		marvelSevice
-			.getCharacter(props.charId)
+		clearError();
+		getCharacter(props.charId)
 			.then(onCharLoaded)
-			.catch(onError)
 	};
 
 	const content = !(error || loading || !char) ? <Content char={char}/> : null;

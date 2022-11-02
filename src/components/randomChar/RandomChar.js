@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -8,39 +8,24 @@ import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 const RandomChar = () => {
-	const [char, setChar] = useState({});
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(false);
+	const [char, setChar] = useState({}); // оставляем это состояние внутри компонента, оно почти больше нигде не используется, выносить в отдельный хук не нужно
 
-	const marvelSevice = new MarvelService();
+	const {loading, error, getCharacter, clearError} = useMarvelService(); // достаем уникальные для текущего компонента сущности из вызова нашего сервиса 
+
+	useEffect(() => {
+		updateChar();
+	}, []);
 
 	const onCharLoaded = (char) => {
 		setChar(char);
-		setLoading(false);
-		setError(false);
-	}
-
-	const onError = () => {
-		setLoading(false);
-		setError(true);
-	}
-
-	const onCharLoading = () => {
-		setLoading(true);
 	}
 
 	const updateChar = () => {
-		onCharLoading();
+		clearError();
 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-		marvelSevice
-			.getCharacter(id)
-			.then(onCharLoaded)
-			.catch(onError);
+		getCharacter(id)
+			.then(onCharLoaded);
 	};
-
-	useEffect(() => {
-		updateChar()
-	}, []);
 
 	const view = !(error || loading) ? <View char={char}/> : null;
 	const spinner = loading ? <Spinner/> : null;
