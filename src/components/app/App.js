@@ -5,6 +5,9 @@ import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import AppBanner from "../appBanner/AppBanner";
+import ComicsList from "../comicsList/ComicsList";
+import useMarvelService from "../../services/MarvelService";
 
 import decoration from '../../resources/img/vision.png';
 
@@ -16,12 +19,13 @@ const App = () => {
 		setCharSelected(id);
 	}
 
-	
 	return (
 		<div className="app">
 			<AppHeader/>
 			<main>
-				<ErrorBoundary>
+				<AppBanner/>
+				<ComicsList/>
+				{/*<ErrorBoundary>
 					<RandomChar/>
 				</ErrorBoundary>
 				<div className="char__content">
@@ -32,7 +36,7 @@ const App = () => {
 						<CharInfo charId={charSelected}/>
 					</ErrorBoundary>
 				</div>
-				<img className="bg-decoration" src={decoration} alt="vision"/>
+				<img className="bg-decoration" src={decoration} alt="vision"/>*/}
 			</main>
 		</div>
 	)  

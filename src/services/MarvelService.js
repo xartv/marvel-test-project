@@ -6,6 +6,8 @@ const useMarvelService = () => {
 	const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	const _apiKey = 'apikey=21aa5af94424603715dc10109257132d';
 	const _baseOffset = 100;
+	const _issueNumber = 1;
+	const _comicsLimit = 8;
 
 	const getAllCharacters = async (offset = _baseOffset) => {
 		const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
@@ -15,6 +17,21 @@ const useMarvelService = () => {
 	const getCharacter = async (id) => {
 		const res = await request(`${_apiBase}characters/${id}?limit=9&offset=210&${_apiKey}`);
 		return _transformCharacter(res.data.results[0]);
+	}
+
+	const getAllComics = async(offset = _baseOffset) => {
+		const res = await request(`${_apiBase}comics?issueNumber=${_issueNumber}&orderBy=focDate&limit=${_comicsLimit}&offset=${offset}&${_apiKey}`);
+		return res.data.results.map(_transformComics);
+	}
+
+	const _transformComics = (comics) => {
+		return {
+			id: comics.id,
+			name: comics.title,
+			thumbnail: comics.thumbnail.path + '.' + comics.thumbnail.extension,
+			price: comics.prices[0].price,
+			url: comics.urls[0].url,
+		}
 	}
 
 	const _transformCharacter = (char) => {
@@ -36,7 +53,7 @@ const useMarvelService = () => {
 		}		
 	}
 
-	return {loading, error, getAllCharacters, getCharacter, clearError} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
+	return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
 }
 
 export default useMarvelService;
