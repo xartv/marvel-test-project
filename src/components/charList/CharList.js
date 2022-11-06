@@ -46,7 +46,7 @@ const CharList = (props) => {
 		e.target.classList.add('char__item_selected');
 	}
 
-	
+	console.log('Charlist!');
 	
 	const {onCharSelected} = props;
 	const elements = charList.map((char, i) => {
