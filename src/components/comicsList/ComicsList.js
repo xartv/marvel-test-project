@@ -1,5 +1,7 @@
-import useMarvelService from '../../services/MarvelService';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -15,6 +17,7 @@ const ComicsList = () => {
 
 	useEffect(() => {
 		onRequest(offset, true)
+		// eslint-disable-next-line
 	}, [])
 
 	const onRequest = (offset, initial) => {
@@ -34,19 +37,19 @@ const ComicsList = () => {
 		setOffset(offset => offset + 8);
 	}
 	
-	const elements = comicsList.map((comics, i) => {
-		const {id, name, thumbnail, url} = comics;
+	const elements = comicsList.map((comics) => {
+		const {id, name, thumbnail} = comics;
 		let {price} = comics;
 		const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {'objectFit': 'contain'} : null;
 		price = price === 0 ? 'Not available' : `${price}$`;
 
 		return (
 			<li key={id} className="comics__item">
-				<a href={url}>
+				<Link to={`/comics/${id}`}>
 						<img style={imgStyle} src={thumbnail} alt="ultimate war" className="comics__item-img"/>
 						<div className="comics__item-name">{name}</div>
 						<div className="comics__item-price">{price}</div>
-				</a>
+				</Link>
 			</li>
 		)
 	})
