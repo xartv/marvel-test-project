@@ -11,6 +11,7 @@ const SingleComicPage = () => {
 
 	useEffect(() => {
 		onRequest(id);
+		// eslint-disable-next-line
 	}, [id])
 
 	const onComicLoaded = (comic) => {
