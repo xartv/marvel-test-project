@@ -1,6 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import useMarvelService from '../../services/MarvelService';
+
+import AppBanner from '../appBanner/AppBanner';
 
 import './singlePage.scss';
 
@@ -38,6 +41,7 @@ const SinglePage = (props) => {
 	
 	return (
 		<>
+			<AppBanner/>
 			{comicContent}
 			{charContent}
 		</>
@@ -48,16 +52,23 @@ const ComicContent = ({comic}) => {
 	const {name, description, thumbnail, price, pageCount, language} = comic;
 	return (
 		<div className="single">
-		<img src={thumbnail} alt={name} className="single__img"/>
-		<div className="single__info">
-			<h2 className="single__name">{name}</h2>
-			<p className="single__descr">{description}</p>
-			<p className="single__descr">{pageCount} pages</p>
-			<p className="single__descr">language: {language}</p>
-			<div className="single__price">{price} $</div>
+			<Helmet>
+				<meta
+					name="description"
+					content={`${name} comics book`}
+					/>
+				<title>{name}</title>
+			</Helmet>
+			<img src={thumbnail} alt={name} className="single__img"/>
+			<div className="single__info">
+				<h2 className="single__name">{name}</h2>
+				<p className="single__descr">{description}</p>
+				<p className="single__descr">{pageCount} pages</p>
+				<p className="single__descr">language: {language}</p>
+				<div className="single__price">{price} $</div>
+			</div>
+			<Link to="../comics" className="single__back">Back to all</Link>
 		</div>
-		<Link to="../comics" className="single__back">Back to all</Link>
-	</div>
 	)
 }
 
@@ -65,13 +76,20 @@ const CharContent = ({char}) => {
 	const {name, description, thumbnail} = char;
 	return (
 		<div className="single">
-		<img src={thumbnail} alt={name} className="single__img"/>
-		<div className="single__info">
-			<h2 className="single__name">{name}</h2>
-			<p className="single__descr">{description}</p>
+			<Helmet>
+				<meta
+					name="description"
+					content={`${name} single page`}
+					/>
+				<title>{name}</title>
+			</Helmet>
+			<img src={thumbnail} alt={name} className="single__img"/>
+			<div className="single__info">
+				<h2 className="single__name">{name}</h2>
+				<p className="single__descr">{description}</p>
+			</div>
+			<Link to="/" className="single__back">Back main page</Link>
 		</div>
-		<Link to="/" className="single__back">Back main page</Link>
-	</div>
 	)
 }
 
