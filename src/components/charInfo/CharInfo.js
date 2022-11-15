@@ -2,6 +2,7 @@ import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 import Skeleton from '../skeleton/Skeleton';
+import FindChar from "../findChar/FindChar";
 
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -39,13 +40,16 @@ const CharInfo = (props) => {
 	const skeleton = !(error || loading || char) ? <Skeleton/> : null;
 
 	return (
-		<div className="char__info">
-			{content}
-			{spinner}
-			{errorMessage}
-			{skeleton}
+		<div className='char__wrapper'>
+			<div className="char__info">
+				{content}
+				{spinner}
+				{errorMessage}
+				{skeleton}
+			</div>
+			<FindChar/>
 		</div>
-)
+	)
 }
 
 const Content = ({char}) => {

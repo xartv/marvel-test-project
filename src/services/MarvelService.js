@@ -1,10 +1,10 @@
 import { useHttp } from '../hooks/http.hook';
 
 const useMarvelService = () => {
-	const {loading, request, error, clearError} = useHttp(); // вытаскиваем сущности хука в отдельные переменные
+	const {loading, request, error, clearError, setError} = useHttp(); // вытаскиваем сущности хука в отдельные переменные
 
 	const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
-	const _apiKey = 'apikey=21aa5af94424603715dc10109257132d';
+	const _apiKey = 'apikey=21aa5af94424603715dc10109257132d'; 
 	const _baseOffset = 100;
 	const _issueNumber = 1;
 	const _comicsLimit = 8;
@@ -17,6 +17,21 @@ const useMarvelService = () => {
 	const getCharacter = async (id) => {
 		const res = await request(`${_apiBase}characters/${id}?limit=9&offset=210&${_apiKey}`);
 		return _transformCharacter(res.data.results[0]);
+	}
+
+	const findCharacter = async (name) => {
+
+		let res;
+		let data;
+		try {
+			res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
+			if (res.data.results.length === 0) throw new Error(`There is no "${name}" in database`)
+			data = _transformCharacter(res.data.results[0]) 
+		} catch(e) {
+			setError(e.message)
+		}
+
+		return data;
 	}
 
 	const getAllComics = async(offset = _baseOffset) => {
@@ -61,7 +76,7 @@ const useMarvelService = () => {
 		}		
 	}
 
-	return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComic} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
+	return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComic, findCharacter, setError} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
 }
 
 export default useMarvelService;

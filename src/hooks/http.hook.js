@@ -30,5 +30,5 @@ export const useHttp = () => {
 	// нужна функция, для того, чтобы затереть стейт с ошибкой
 	const clearError = useCallback(() => setError(null), []);
 
-	return {loading, request, error, clearError}; // возвращаем из хука сущности
+	return {loading, request, error, clearError, setError}; // возвращаем из хука сущности
 }

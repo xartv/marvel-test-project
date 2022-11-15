@@ -69,6 +69,14 @@ main {
     animation: pulse 1.5s ease-in-out .5s infinite
 }
 
+.error {
+	margin-top: 10px;
+	color: $main-color;
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 24px;
+}
+
 @keyframes pulse {
     0% {
         opacity: 1
