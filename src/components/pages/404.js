@@ -7,11 +7,11 @@ const NoMatch = () => {
 	return (
 		<div>
 			<Helmet>
+				<title>Ooops...look at this error!</title>
 				<meta
 					name="description"
 					content='Error page'
 					/>
-				<title>Ooops...look at this error!</title>
 			</Helmet>
 			<ErrorMessage/>
 			<p style={{'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px'}}></p>

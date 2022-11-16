@@ -1,7 +1,7 @@
 import { useHttp } from '../hooks/http.hook';
 
 const useMarvelService = () => {
-	const {loading, request, error, clearError, setError} = useHttp(); // вытаскиваем сущности хука в отдельные переменные
+	const {request, clearError, process, setProcess} = useHttp(); // вытаскиваем сущности хука в отдельные переменные
 
 	const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	const _apiKey = 'apikey=21aa5af94424603715dc10109257132d'; 
@@ -28,7 +28,7 @@ const useMarvelService = () => {
 			if (res.data.results.length === 0) throw new Error(`There is no "${name}" in database`)
 			data = _transformCharacter(res.data.results[0]) 
 		} catch(e) {
-			setError(e.message)
+			setProcess('error');
 		}
 
 		return data;
@@ -76,7 +76,15 @@ const useMarvelService = () => {
 		}		
 	}
 
-	return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComic, findCharacter, setError} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
+	return {
+					getAllCharacters, 
+					getCharacter, 
+					clearError, 
+					getAllComics, 
+					getComic, 
+					findCharacter,  
+					process,
+					setProcess} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
 }
 
 export default useMarvelService;

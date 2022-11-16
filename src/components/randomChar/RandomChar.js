@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
@@ -9,7 +8,7 @@ import mjolnir from '../../resources/img/mjolnir.png';
 const RandomChar = () => {
 	const [char, setChar] = useState({}); // оставляем это состояние внутри компонента, оно почти больше нигде не используется, выносить в отдельный хук не нужно
 
-	const {loading, error, getCharacter, clearError} = useMarvelService(); // достаем уникальные для текущего компонента сущности из вызова нашего сервиса 
+	const {getCharacter, clearError, process, setProcess} = useMarvelService(); // достаем уникальные для текущего компонента сущности из вызова нашего сервиса 
 
 	useEffect(() => {
 		updateChar();
@@ -24,18 +23,13 @@ const RandomChar = () => {
 		clearError();
 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 		getCharacter(id)
-			.then(onCharLoaded);
+			.then(onCharLoaded)
+			.then(() => setProcess('confirmed'));
 	};
-
-	const view = !(error || loading) ? <View char={char}/> : null;
-	const spinner = loading ? <Spinner/> : null;
-	const errorMessage = error ? <ErrorMessage/> : null;
 
 	return (
 		<div className="randomchar">
-				{view}
-				{spinner}
-				{errorMessage}
+				{setContent(process, Content, char)}
 				<div className="randomchar__static">
 						<p className="randomchar__title">
 								Random character for today!<br/>
@@ -53,8 +47,8 @@ const RandomChar = () => {
 	)
 }
 
-const View = ({char}) => {
-	const {name, description, thumbnail, homepage, wiki} = char;
+const Content = ({data}) => {
+	const {name, description, thumbnail, homepage, wiki} = data;
 	const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {'objectFit': 'contain'} : null;
 
 	return (

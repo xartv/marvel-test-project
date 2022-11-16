@@ -8,6 +8,27 @@ import PropTypes from 'prop-types';
 
 import './charList.scss';
 
+const setContent = (process, elements, newListLoading) => {
+	switch (process) {
+		case 'waiting': 
+			return <Spinner/>;
+		case 'loading': 
+			return newListLoading ? 
+							<ul className="char__grid">
+								{elements}
+							</ul>
+						 : <Spinner/>;
+		case 'confirmed': 
+			return <ul className="char__grid">
+								{elements}
+							</ul>
+		case 'error': 
+			return <ErrorMessage/>;
+		default:
+			throw new Error('Unexpected process state');
+	}
+}
+
 const CharList = (props) => {
 
 	const [charList, setCharList] = useState([]);
@@ -17,7 +38,7 @@ const CharList = (props) => {
 
 	const myRef = useRef([]);
 	
-	const {loading, error, getAllCharacters} = useMarvelService();
+	const {getAllCharacters, process, setProcess} = useMarvelService();
 
 	useEffect(() => {
 		onRequest(offset, true);
@@ -28,6 +49,7 @@ const CharList = (props) => {
 		initial ? setNewListLoading(false) : setNewListLoading(true); // если initial true, то это означает, что у нас первичная загрузка
 		getAllCharacters(offset)
 			.then(onCharListLoaded)
+			.then(() => setProcess('confirmed'))
 	}
 
 	const onCharListLoaded = (newCharList) => {
@@ -51,7 +73,7 @@ const CharList = (props) => {
 	const elements = charList.map((char, i) => {
 		const {id, thumbnail, ...charProps} = char;
 		const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {'objectFit': 'contain'} : null;
-
+		
 		return (
 			<CharListItem 
 				key={id} 
@@ -67,16 +89,9 @@ const CharList = (props) => {
 		)
 	})
 
-	const spinner = loading && !newListLoading ? <Spinner/> : null;
-	const errorMessage = error ? <ErrorMessage/> : null;
-
 	return(
 		<div className="char__list">
-			{errorMessage}
-			{spinner}
-			<ul className="char__grid">
-				{elements}
-			</ul>
+			{setContent(process, elements, newListLoading)}
 			<button 
 				className="button button__main button__long" 
 				onClick={() => onRequest(offset)}

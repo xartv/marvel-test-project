@@ -1,8 +1,6 @@
 import useMarvelService from '../../services/MarvelService';
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import Spinner from '../spinner/Spinner';
-import Skeleton from '../skeleton/Skeleton';
 import FindChar from "../findChar/FindChar";
+import setContent from '../../utils/setContent';
 
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -13,7 +11,7 @@ const CharInfo = (props) => {
 
 	const [char, setChar] = useState(null);
 
-	const {loading, error, getCharacter, clearError} = useMarvelService();
+	const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
 	useEffect(() => {
 		updateChar();
@@ -32,29 +30,22 @@ const CharInfo = (props) => {
 		clearError();
 		getCharacter(props.charId)
 			.then(onCharLoaded)
+			.then(() => setProcess('confirmed'));
 	};
-
-	const content = !(error || loading || !char) ? <Content char={char}/> : null;
-	const spinner = loading ? <Spinner/> : null;
-	const errorMessage = error ? <ErrorMessage/> : null;
-	const skeleton = !(error || loading || char) ? <Skeleton/> : null;
 
 	return (
 		<div className='char__wrapper'>
 			<div className="char__info">
-				{content}
-				{spinner}
-				{errorMessage}
-				{skeleton}
+				{setContent(process, Content, char)}
 			</div>
 			<FindChar/>
 		</div>
 	)
 }
 
-const Content = ({char}) => {
-	const {name, description, thumbnail, homepage, wiki} = char;
-	let {comics} = char;
+const Content = ({data}) => {
+	const {name, description, thumbnail, homepage, wiki} = data;
+	let {comics} = data;
 
 	if (comics.length > 10) {
 		comics = comics.splice(0, 10);

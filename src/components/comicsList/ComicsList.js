@@ -7,13 +7,34 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './comicsList.scss';
 
+const setContent = (process, elements, newListLoading) => {
+	switch (process) {
+		case 'waiting': 
+			return <Spinner/>;
+		case 'loading': 
+			return newListLoading ? 
+							<ul className="comics__grid">
+								{elements}
+							</ul>
+						 : <Spinner/>;
+		case 'confirmed': 
+			return <ul className="comics__grid">
+								{elements}
+							</ul>
+		case 'error': 
+			return <ErrorMessage/>;
+		default:
+			throw new Error('Unexpected process state');
+	}
+}
+
 const ComicsList = () => {
 
 	const [comicsList, setComicsList] = useState([]);
 	const [offset, setOffset] = useState(100);
 	const [newListLoading, setNewListLoading] = useState(false);
 	const [endList, setEndList] = useState(false);
-	const {loading, error, clearError, getAllComics} = useMarvelService();
+	const {clearError, getAllComics, process, setProcess} = useMarvelService();
 
 	useEffect(() => {
 		onRequest(offset, true)
@@ -25,6 +46,7 @@ const ComicsList = () => {
 		initial ? setNewListLoading(false) : setNewListLoading(true); // если initial true, то это означает, что у нас первичная загрузка
 		getAllComics(offset)
 			.then(onComicsListLoaded)
+			.then(() => setProcess('confirmed'));
 	}
 
 	const onComicsListLoaded = (newComicsList) => {
@@ -54,23 +76,16 @@ const ComicsList = () => {
 		)
 	})
 
-	const spinner = loading && !newListLoading ? <Spinner/> : null;
-	const errorMessage = error ? <ErrorMessage/> : null;
-
 	return (
 			<div className="comics__list">
-				{spinner}
-				{errorMessage}
-					<ul className="comics__grid">
-							{elements}
-					</ul>
-					<button 
-						disabled={newListLoading ? true : false}
-						className="button button__main button__long"
-						onClick={() => onRequest(offset)}
-						style={{display: endList ? 'none' : 'block'}}>
-							<div className="inner">load more</div>
-					</button>
+				{setContent(process, elements, newListLoading)}
+				<button 
+					disabled={newListLoading ? true : false}
+					className="button button__main button__long"
+					onClick={() => onRequest(offset)}
+					style={{display: endList ? 'none' : 'block'}}>
+						<div className="inner">load more</div>
+				</button>
 			</div>
 	)
 }

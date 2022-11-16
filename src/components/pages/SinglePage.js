@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import useMarvelService from '../../services/MarvelService';
+import setContent from '../../utils/setContent';
 
 import AppBanner from '../appBanner/AppBanner';
 
@@ -10,7 +11,7 @@ import './singlePage.scss';
 const SinglePage = (props) => {
 	const { id } = useParams();
 	const [single, setSingle] = useState('');
-	const { getComic, getCharacter } = useMarvelService();
+	const { getComic, getCharacter, process, setProcess } = useMarvelService();
 
 	useEffect(() => {
 		onRequest(id);
@@ -29,27 +30,25 @@ const SinglePage = (props) => {
 		if (props.comic) {
 			getComic(id)
 				.then(onComicLoaded)
+				.then(() => setProcess('confirmed'));
 		}
 		if (props.char) {
 			getCharacter(id)
 				.then(onCharLoaded)
+				.then(() => setProcess('confirmed'));
 		}
 	}
-	
-	const comicContent = props.comic ? <ComicContent comic={single}/> : null;
-	const charContent = props.char ? <CharContent char={single}/> : null;
 	
 	return (
 		<>
 			<AppBanner/>
-			{comicContent}
-			{charContent}
+			{props.comic ? setContent(process, ComicContent, single) : props.char ? setContent(process, CharContent, single) : null}
 		</>
 	)
 }
 
-const ComicContent = ({comic}) => {
-	const {name, description, thumbnail, price, pageCount, language} = comic;
+const ComicContent = ({data}) => {
+	const {name, description, thumbnail, price, pageCount, language} = data;
 	return (
 		<div className="single">
 			<Helmet>
@@ -72,8 +71,8 @@ const ComicContent = ({comic}) => {
 	)
 }
 
-const CharContent = ({char}) => {
-	const {name, description, thumbnail} = char;
+const CharContent = ({data}) => {
+	const {name, description, thumbnail} = data;
 	return (
 		<div className="single">
 			<Helmet>
