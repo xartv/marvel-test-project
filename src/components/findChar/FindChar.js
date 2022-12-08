@@ -1,7 +1,9 @@
 import {useState, useReducer} from 'react';
 import { Link } from 'react-router-dom';
+
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
+
 import useMarvelService from '../../services/MarvelService';
 
 import './findChar.scss'
@@ -31,6 +33,7 @@ const FindChar = () => {
 
 	const onSubmitForm = async(name) => {
 		const findedChar = await findCharacter(name);
+		
 		if (findedChar) {
 			onCharFinded(findedChar);
 		} else {
@@ -76,7 +79,7 @@ const Content = ({char, status}) => {
 			return (
 				<>
 					<div className='findChar_finded'>{`There is! Visit ${char.name} page?`}</div>
-					<Link to={`/characters/${char.id}`} className="button button__secondary" type='submit'>
+					<Link to={`/marvel-test-project/characters/${char.id}`} className="button button__secondary" type='submit'>
 						<div className="inner">To page</div>
 					</Link>
 				</>

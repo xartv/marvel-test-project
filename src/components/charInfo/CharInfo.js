@@ -1,16 +1,14 @@
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import useMarvelService from '../../services/MarvelService';
 import FindChar from "../findChar/FindChar";
 import setContent from '../../utils/setContent';
 
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-
 import './charInfo.scss';
 
 const CharInfo = (props) => {
-
 	const [char, setChar] = useState(null);
-
 	const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
 	useEffect(() => {
@@ -28,6 +26,7 @@ const CharInfo = (props) => {
 		}
 
 		clearError();
+
 		getCharacter(props.charId)
 			.then(onCharLoaded)
 			.then(() => setProcess('confirmed'));
@@ -66,26 +65,26 @@ const Content = ({data}) => {
 	return (
 		<>
 			<div className="char__basics">
-							<img style={imgStyle} src={thumbnail} alt={name}/>
-							<div>
-									<div className="char__info-name">{name}</div>
-									<div className="char__btns">
-											<a href={homepage} className="button button__main">
-													<div className="inner">homepage</div>
-											</a>
-											<a href={wiki} className="button button__secondary">
-													<div className="inner">Wiki</div>
-											</a>
-									</div>
-							</div>
+				<img style={imgStyle} src={thumbnail} alt={name}/>
+				<div>
+					<div className="char__info-name">{name}</div>
+					<div className="char__btns">
+						<a href={homepage} className="button button__main">
+							<div className="inner">homepage</div>
+						</a>
+						<a href={wiki} className="button button__secondary">
+							<div className="inner">Wiki</div>
+						</a>
 					</div>
-					<div className="char__descr">
-							{description}
-					</div>
-					<div className="char__comics">Comics:</div>
-					<ul className="char__comics-list">
-							{elements}
-					</ul>
+				</div>
+		</div>
+		<div className="char__descr">
+			{description}
+		</div>
+		<div className="char__comics">Comics:</div>
+		<ul className="char__comics-list">
+			{elements}
+		</ul>
 		</>
 	)
 }

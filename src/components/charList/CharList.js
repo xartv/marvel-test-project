@@ -1,10 +1,10 @@
+import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import useMarvelService from '../../services/MarvelService';
 import CharListItem from '../charListItem/charListItem';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
-
-import { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import './charList.scss';
 
@@ -30,14 +30,11 @@ const setContent = (process, elements, newListLoading) => {
 }
 
 const CharList = (props) => {
-
 	const [charList, setCharList] = useState([]);
 	const [offset, setOffset] = useState(100);
 	const [newListLoading, setNewListLoading] = useState(false);
 	const [endList, setEndList] = useState(false);
-
 	const myRef = useRef([]);
-	
 	const {getAllCharacters, process, setProcess} = useMarvelService();
 
 	useEffect(() => {
@@ -46,7 +43,7 @@ const CharList = (props) => {
 	}, []);
 
 	const onRequest = (offset, initial) => {
-		initial ? setNewListLoading(false) : setNewListLoading(true); // если initial true, то это означает, что у нас первичная загрузка
+		initial ? setNewListLoading(false) : setNewListLoading(true);
 		getAllCharacters(offset)
 			.then(onCharListLoaded)
 			.then(() => setProcess('confirmed'))
@@ -66,6 +63,7 @@ const CharList = (props) => {
 		myRef.current.forEach(item => {
 			item.classList.remove('char__item_selected');
 		})
+		
 		e.target.classList.add('char__item_selected');
 	}
 	

@@ -1,6 +1,7 @@
-import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+
 import useMarvelService from '../../services/MarvelService';
 import setContent from '../../utils/setContent';
 
@@ -66,7 +67,7 @@ const ComicContent = ({data}) => {
 				<p className="single__descr">language: {language}</p>
 				<div className="single__price">{price} $</div>
 			</div>
-			<Link to="../comics" className="single__back">Back to all</Link>
+			<Link to="/marvel-test-project/comics" className="single__back">Back to all</Link>
 		</div>
 	)
 }
@@ -87,7 +88,7 @@ const CharContent = ({data}) => {
 				<h2 className="single__name">{name}</h2>
 				<p className="single__descr">{description}</p>
 			</div>
-			<Link to="/" className="single__back">Back main page</Link>
+			<Link to="/marvel-test-project" className="single__back">Back main page</Link>
 		</div>
 	)
 }

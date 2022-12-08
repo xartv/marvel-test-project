@@ -29,7 +29,6 @@ const setContent = (process, elements, newListLoading) => {
 }
 
 const ComicsList = () => {
-
 	const [comicsList, setComicsList] = useState([]);
 	const [offset, setOffset] = useState(100);
 	const [newListLoading, setNewListLoading] = useState(false);
@@ -43,7 +42,9 @@ const ComicsList = () => {
 
 	const onRequest = (offset, initial) => {
 		clearError();
-		initial ? setNewListLoading(false) : setNewListLoading(true); // если initial true, то это означает, что у нас первичная загрузка
+
+		initial ? setNewListLoading(false) : setNewListLoading(true);
+
 		getAllComics(offset)
 			.then(onComicsListLoaded)
 			.then(() => setProcess('confirmed'));
@@ -62,31 +63,33 @@ const ComicsList = () => {
 	const elements = comicsList.map((comics) => {
 		const {id, name, thumbnail} = comics;
 		let {price} = comics;
-		const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {'objectFit': 'contain'} : null;
+		const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 
+																		{'objectFit': 'contain'} : null;
+
 		price = price === 0 ? 'Not available' : `${price}$`;
 
 		return (
 			<li key={id} className="comics__item">
-				<Link to={`/comics/${id}`}>
-						<img style={imgStyle} src={thumbnail} alt="ultimate war" className="comics__item-img"/>
-						<div className="comics__item-name">{name}</div>
-						<div className="comics__item-price">{price}</div>
+				<Link to={`/marvel-test-project/comics/${id}`}>
+					<img style={imgStyle} src={thumbnail} alt="ultimate war" className="comics__item-img"/>
+					<div className="comics__item-name">{name}</div>
+					<div className="comics__item-price">{price}</div>
 				</Link>
 			</li>
 		)
 	})
 
 	return (
-			<div className="comics__list">
-				{setContent(process, elements, newListLoading)}
-				<button 
-					disabled={newListLoading ? true : false}
-					className="button button__main button__long"
-					onClick={() => onRequest(offset)}
-					style={{display: endList ? 'none' : 'block'}}>
-						<div className="inner">load more</div>
-				</button>
-			</div>
+		<div className="comics__list">
+			{setContent(process, elements, newListLoading)}
+			<button 
+				disabled={newListLoading ? true : false}
+				className="button button__main button__long"
+				onClick={() => onRequest(offset)}
+				style={{display: endList ? 'none' : 'block'}}>
+					<div className="inner">load more</div>
+			</button>
+		</div>
 	)
 }
 

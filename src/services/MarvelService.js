@@ -1,8 +1,7 @@
 import { useHttp } from '../hooks/http.hook';
 
 const useMarvelService = () => {
-	const {request, clearError, process, setProcess} = useHttp(); // вытаскиваем сущности хука в отдельные переменные
-
+	const {request, clearError, process, setProcess} = useHttp(); 
 	const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	const _apiKey = 'apikey=21aa5af94424603715dc10109257132d'; 
 	const _baseOffset = 100;
@@ -11,7 +10,7 @@ const useMarvelService = () => {
 
 	const getAllCharacters = async (offset = _baseOffset) => {
 		const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
-		return res.data.results.map(_transformCharacter); // можно не писать item => this._transformCharacter(item), приходящий аргумент итак попадет в коллбэк
+		return res.data.results.map(_transformCharacter); 
 	}
 	
 	const getCharacter = async (id) => {
@@ -20,9 +19,9 @@ const useMarvelService = () => {
 	}
 
 	const findCharacter = async (name) => {
-
 		let res;
 		let data;
+
 		try {
 			res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
 			if (res.data.results.length === 0) throw new Error(`There is no "${name}" in database`)
@@ -36,15 +35,18 @@ const useMarvelService = () => {
 
 	const getAllComics = async(offset = _baseOffset) => {
 		const res = await request(`${_apiBase}comics?issueNumber=${_issueNumber}&orderBy=focDate&limit=${_comicsLimit}&offset=${offset}&${_apiKey}`);
+
 		return res.data.results.map(_transformComics);
 	}
 
 	const getComic = async(id) => {
 		const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+
 		return _transformComics(res.data.results[0]);
 	}
 
 	const _transformComics = (comics) => {
+
 		return {
 			id: comics.id,
 			name: comics.title,
@@ -84,7 +86,7 @@ const useMarvelService = () => {
 					getComic, 
 					findCharacter,  
 					process,
-					setProcess} // возвращаем сущности (состояния загрузки и эррора, пройдя через сервис, передадутся после вызова сервиса в компонент)
+					setProcess}
 }
 
 export default useMarvelService;

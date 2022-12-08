@@ -8,7 +8,7 @@ export const useHttp = () => {
 		setProcess('loading');
 
 		try {
-			const response = await fetch(url, {method, body, headers}); // передаем в фетч аргументы из коллбэка для настройки запроса
+			const response = await fetch(url, {method, body, headers});
 
 			if (!response.ok) {
 				throw new Error(`Could not fetch ${url}, status: ${response.status}`);
@@ -20,14 +20,13 @@ export const useHttp = () => {
 
 		} catch(e) {
 			setProcess('error');
-			throw e; // пробрасываем ошибку дальше
+			throw e;
 		}
 	}, []);
 
-	// нужна функция, для того, чтобы затереть стейт с ошибкой
 	const clearError = useCallback(() => {
 		setProcess('loading');
 	}, []);
 
-	return {request, clearError, process, setProcess}; // возвращаем из хука сущности
+	return {request, clearError, process, setProcess};
 }

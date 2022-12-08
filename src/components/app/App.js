@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import AppHeader from "../appHeader/AppHeader";
 import Spinner from '../spinner/Spinner';
 
@@ -17,10 +18,10 @@ const App = () => {
 				<main>
 					<Suspense fallback={<Spinner/>}>
 						<Routes>
-							<Route path="/" element={<MainPage/>}/>
-							<Route path="/comics" element={<ComicsPage/>}/>
-							<Route path="/comics/:id" element={<SinglePage comic={true}/>}/>
-							<Route path="/characters/:id" element={<SinglePage char={true}/>}/>
+							<Route path="/marvel-test-project" element={<MainPage/>}/>
+							<Route path="/marvel-test-project/comics" element={<ComicsPage/>}/>
+							<Route path="/marvel-test-project/comics/:id" element={<SinglePage comic={true}/>}/>
+							<Route path="/marvel-test-project/characters/:id" element={<SinglePage char={true}/>}/>
 							<Route path="*" element={<NoMatch/>}/>
 						</Routes>
 					</Suspense>
