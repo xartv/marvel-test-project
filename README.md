@@ -7,9 +7,9 @@ Desktop only (adaptation for mobile devices ___in progress___)
 
 To run the project locally:
 * Clone this repo `git clone https://github.com/xartv/marvel-test-project.git`
-* run `cd marvel-test-project` to go to the directory 
-* run `npm install` to install all required dependencies
-* run `npm start` to to start the local server (this project uses create-react-app)
+* Run `cd marvel-test-project` to go to the directory 
+* Run `npm install` to install all required dependencies
+* Run `npm start` to start the local server (this project uses create-react-app)
 
 ## Functionality overview
 * Getting characters and comics from the official Marvel database
