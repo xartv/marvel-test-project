@@ -4,7 +4,7 @@ A React application that uses the official API from Marvel in its work. The appl
 ## Getting started
 You can view a live demo over at https://xartv.github.io/marvel-test-project/
 
-To get the frontend running locally:
+To run a project locally:
 * Clone this repo `git clone https://github.com/xartv/marvel-test-project.git`
 * run `cd marvel-test-project` to go to the directory 
 * run `npm install` to install all required dependencies
