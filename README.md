@@ -2,7 +2,7 @@
 A React application that uses the official API from Marvel in its work. The application allows you to get information about any character from the Marvel database, including a list of comics in which this character appears.
 
 ## Getting started
-You can view a live demo over at https://xartv.github.io/marvel-test-project/
+You can view a live demo over at https://xartv.github.io/marvel-test-project/  
 Desktop only (adaptation for mobile devices ___in progress___)
 
 To run the project locally:
